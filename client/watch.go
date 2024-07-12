@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xalanq/cf-tool/util"
+	"github.com/chomosuke/cf-tool/util"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/fatih/color"
@@ -301,9 +301,10 @@ func (c *Client) WatchSubmission(info Info, n int, line bool) (submissions []Sub
 		if endCount == len(submissions) {
 			return
 		}
-		sub := time.Now().Sub(st)
-		if sub < time.Second {
-			time.Sleep(time.Duration(time.Second - sub))
+		sub := time.Since(st)
+		timeWait := time.Second
+		if sub < timeWait {
+			time.Sleep(time.Duration(timeWait - sub))
 		}
 	}
 }

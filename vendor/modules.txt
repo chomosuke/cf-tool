@@ -1,8 +1,6 @@
 # github.com/PuerkitoBio/goquery v1.5.0
 ## explicit
 github.com/PuerkitoBio/goquery
-# github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6
-## explicit
 # github.com/andybalholm/cascadia v1.0.0
 ## explicit
 github.com/andybalholm/cascadia
@@ -44,24 +42,17 @@ github.com/shirou/gopsutil/internal/common
 github.com/shirou/gopsutil/mem
 github.com/shirou/gopsutil/net
 github.com/shirou/gopsutil/process
-# github.com/shirou/w32 v0.0.0-20160930032740-bb4de0191aa4
-## explicit
 # github.com/skratchdot/open-golang v0.0.0-20190402232053-79abb63cd66e
 ## explicit
 github.com/skratchdot/open-golang/open
+# github.com/stretchr/testify v1.9.0
+## explicit; go 1.17
 # github.com/tklauser/go-sysconf v0.3.14
 ## explicit; go 1.18
 github.com/tklauser/go-sysconf
 # github.com/tklauser/numcpus v0.8.0
 ## explicit; go 1.18
 github.com/tklauser/numcpus
-# github.com/xalanq/cf-tool v1.0.0
-## explicit
-github.com/xalanq/cf-tool/client
-github.com/xalanq/cf-tool/cmd
-github.com/xalanq/cf-tool/config
-github.com/xalanq/cf-tool/cookiejar
-github.com/xalanq/cf-tool/util
 # github.com/yusufpapurcu/wmi v1.2.4
 ## explicit; go 1.16
 github.com/yusufpapurcu/wmi

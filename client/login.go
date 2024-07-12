@@ -13,9 +13,9 @@ import (
 	"regexp"
 	"syscall"
 
+	"github.com/chomosuke/cf-tool/cookiejar"
+	"github.com/chomosuke/cf-tool/util"
 	"github.com/fatih/color"
-	"github.com/xalanq/cf-tool/cookiejar"
-	"github.com/xalanq/cf-tool/util"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
@@ -167,7 +167,7 @@ func (c *Client) ConfigLogin() (err error) {
 	color.Cyan("Configure handle/email and password")
 	color.Cyan("Note: The password is invisible, just type it correctly.")
 
-	fmt.Printf("handle/email: ")
+	fmt.Printf("Enter handle/email: ")
 	handleOrEmail := util.ScanlineTrim()
 
 	password := ""
