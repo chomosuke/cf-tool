@@ -302,7 +302,7 @@ func (c *Client) WatchSubmission(info Info, n int, line bool) (submissions []Sub
 			return
 		}
 		sub := time.Since(st)
-		timeWait := time.Second
+		timeWait := time.Second * 3 // Poll every 3 seconds
 		if sub < timeWait {
 			time.Sleep(time.Duration(timeWait - sub))
 		}
