@@ -7,16 +7,13 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"io"
 	"net/url"
 	"regexp"
-	"syscall"
 
 	"github.com/chomosuke/cf-tool/cookiejar"
 	"github.com/chomosuke/cf-tool/util"
 	"github.com/fatih/color"
-	"golang.org/x/crypto/ssh/terminal"
 )
 
 // genFtaa generate a random one
@@ -98,7 +95,6 @@ func (c *Client) Login() (err error) {
 	c.Bfaa = bfaa
 	c.Handle = handle
 	c.Jar = jar
-	color.Green("Succeed!!")
 	color.Green("Welcome %v~", handle)
 	return c.save()
 }
@@ -153,47 +149,23 @@ func decrypt(handle, password string) (ret string, err error) {
 
 // DecryptPassword get real password
 func (c *Client) DecryptPassword() (string, error) {
-	if len(c.Password) == 0 || len(c.HandleOrEmail) == 0 {
-		return "", errors.New("You have to configure your handle and password by `cf config`")
+	if len(c.Password) == 0 {
+		return "", errors.New("empty password")
+	}
+	if len(c.HandleOrEmail) == 0 {
+		return "", errors.New("empty handle/email")
 	}
 	return decrypt(c.HandleOrEmail, c.Password)
 }
 
-// ConfigLogin configure handle and password
-func (c *Client) ConfigLogin() (err error) {
-	if c.Handle != "" {
-		color.Green("Current user: %v", c.Handle)
-	}
-	color.Cyan("Configure handle/email and password")
-	color.Cyan("Note: The password is invisible, just type it correctly.")
+func (c *Client) Setup(handle string, rawPassword string) (err error) {
+	c.Handle = handle
+	c.HandleOrEmail = handle
 
-	fmt.Printf("Enter handle/email: ")
-	handleOrEmail := util.ScanlineTrim()
-
-	password := ""
-	if terminal.IsTerminal(int(syscall.Stdin)) {
-		fmt.Printf("password: ")
-		bytePassword, err := terminal.ReadPassword(int(syscall.Stdin))
-		if err != nil {
-			fmt.Println()
-			if err.Error() == "EOF" {
-				fmt.Println("Interrupted.")
-				return nil
-			}
-			return err
-		}
-		password = string(bytePassword)
-		fmt.Println()
-	} else {
-		color.Red("Your terminal does not support the hidden password.")
-		fmt.Printf("password: ")
-		password = util.Scanline()
-	}
-
-	c.HandleOrEmail = handleOrEmail
-	c.Password, err = encrypt(handleOrEmail, password)
+	c.Password, err = encrypt(c.HandleOrEmail, rawPassword)
 	if err != nil {
 		return
 	}
+
 	return c.Login()
 }

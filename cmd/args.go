@@ -6,57 +6,42 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"github.com/docopt/docopt-go"
 	"github.com/chomosuke/cf-tool/client"
 	"github.com/chomosuke/cf-tool/config"
+	"github.com/docopt/docopt-go"
 )
 
 // ParsedArgs parsed arguments
 type ParsedArgs struct {
 	Info      client.Info
-	File      string
+	File      string   `docopt:"--file"`
+	Handle    string   `docopt:"--handle"`
+	Password  string   `docopt:"--pass"`
+	LangId    string   `docopt:"--lang"`
 	Specifier []string `docopt:"<specifier>"`
 	Alias     string   `docopt:"<alias>"`
 	Accepted  bool     `docopt:"ac"`
 	All       bool     `docopt:"all"`
-	Handle    string   `docopt:"<handle>"`
 	Version   string   `docopt:"{version}"`
-	Config    bool     `docopt:"config"`
+	Setup    bool      `docopt:"setup"`
 	Submit    bool     `docopt:"submit"`
-	List      bool     `docopt:"list"`
-	Parse     bool     `docopt:"parse"`
-	Gen       bool     `docopt:"gen"`
-	Test      bool     `docopt:"test"`
-	Watch     bool     `docopt:"watch"`
-	Open      bool     `docopt:"open"`
-	Stand     bool     `docopt:"stand"`
-	Sid       bool     `docopt:"sid"`
-	Race      bool     `docopt:"race"`
-	Pull      bool     `docopt:"pull"`
-	Clone     bool     `docopt:"clone"`
 	Upgrade   bool     `docopt:"upgrade"`
 }
 
-// Args global variable
-var Args *ParsedArgs
-
-func parseArgs(opts docopt.Opts) error {
+func parseArgs(args *ParsedArgs, opts docopt.Opts) (err error) {
 	cfg := config.Instance
 	cln := client.Instance
 	path, err := os.Getwd()
 	if err != nil {
-		return err
+		return
 	}
-	if file, ok := opts["--file"].(string); ok {
-		Args.File = file
-	} else if file, ok := opts["<file>"].(string); ok {
-		Args.File = file
+
+	if args.Handle == "" {
+		args.Handle = cln.Handle
 	}
-	if Args.Handle == "" {
-		Args.Handle = cln.Handle
-	}
+
 	info := client.Info{}
-	for _, arg := range Args.Specifier {
+	for _, arg := range args.Specifier {
 		parsed := parseArg(arg)
 		if value, ok := parsed["problemType"]; ok {
 			if info.ProblemType != "" && info.ProblemType != value {
@@ -131,7 +116,7 @@ func parseArgs(opts docopt.Opts) error {
 		path = filepath.Dir(path)
 	}
 	info.RootPath = filepath.Join(info.RootPath, cfg.FolderName[info.ProblemType])
-	Args.Info = info
+	args.Info = info
 	// util.DebugJSON(Args)
 	return nil
 }

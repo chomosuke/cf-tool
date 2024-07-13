@@ -8,10 +8,10 @@ import (
 )
 
 // Race command
-func Race() (err error) {
+func Race(args ParsedArgs) (err error) {
 	cfg := config.Instance
 	cln := client.Instance
-	info := Args.Info
+	info := args.Info
 	if err = cln.RaceContest(info); err != nil {
 		if err = loginAgain(cln, err); err == nil {
 			err = cln.RaceContest(info)
@@ -27,5 +27,5 @@ func Race() (err error) {
 	}
 	openURL(URL)
 	openURL(URL + "/problems")
-	return Parse()
+	return Parse(args)
 }

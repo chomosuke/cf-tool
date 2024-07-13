@@ -56,12 +56,12 @@ func gen(source, currentPath, ext string) error {
 }
 
 // Gen command
-func Gen() (err error) {
+func Gen(args ParsedArgs) (err error) {
 	cfg := config.Instance
 	if len(cfg.Template) == 0 {
 		return errors.New("You have to add at least one code template by `cf config`")
 	}
-	alias := Args.Alias
+	alias := args.Alias
 	var path string
 
 	if alias != "" {

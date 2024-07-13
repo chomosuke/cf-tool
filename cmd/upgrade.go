@@ -186,13 +186,13 @@ func upgrade(url, exePath string, size uint) (err error) {
 }
 
 // Upgrade itself
-func Upgrade() (err error) {
+func Upgrade(args ParsedArgs) (err error) {
 	color.Cyan("Checking version")
 	latest, note, ptime, url, size, err := getLatest()
 	if err != nil {
 		return
 	}
-	version := Args.Version
+	version := args.Version
 	if !less(version, latest) {
 		color.Green("Current version %v is the latest", version)
 		return

@@ -7,10 +7,10 @@ import (
 )
 
 // Pull command
-func Pull() (err error) {
+func Pull(args ParsedArgs) (err error) {
 	cln := client.Instance
-	info := Args.Info
-	ac := Args.Accepted
+	info := args.Info
+	ac := args.Accepted
 	rootPath, err := os.Getwd()
 	if err != nil {
 		return

@@ -13,9 +13,9 @@ import (
 )
 
 // List command
-func List() (err error) {
+func List(args ParsedArgs) (err error) {
 	cln := client.Instance
-	info := Args.Info
+	info := args.Info
 	problems, err := cln.Statis(info)
 	if err != nil {
 		if err = loginAgain(cln, err); err == nil {

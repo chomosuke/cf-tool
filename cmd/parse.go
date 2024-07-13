@@ -9,10 +9,10 @@ import (
 )
 
 // Parse command
-func Parse() (err error) {
+func Parse(args ParsedArgs) (err error) {
 	cfg := config.Instance
 	cln := client.Instance
-	info := Args.Info
+	info := args.Info
 	source := ""
 	ext := ""
 	if cfg.GenAfterParse {

@@ -13,8 +13,8 @@ func openURL(url string) error {
 }
 
 // Open command
-func Open() (err error) {
-	URL, err := Args.Info.OpenURL(config.Instance.Host)
+func Open(args ParsedArgs) (err error) {
+	URL, err := args.Info.OpenURL(config.Instance.Host)
 	if err != nil {
 		return
 	}
@@ -22,8 +22,8 @@ func Open() (err error) {
 }
 
 // Stand command
-func Stand() (err error) {
-	URL, err := Args.Info.StandingsURL(config.Instance.Host)
+func Stand(args ParsedArgs) (err error) {
+	URL, err := args.Info.StandingsURL(config.Instance.Host)
 	if err != nil {
 		return
 	}
@@ -31,8 +31,8 @@ func Stand() (err error) {
 }
 
 // Sid command
-func Sid() (err error) {
-	info := Args.Info
+func Sid(args ParsedArgs) (err error) {
+	info := args.Info
 	if info.SubmissionID == "" && client.Instance.LastSubmission != nil {
 		info = *client.Instance.LastSubmission
 	}
