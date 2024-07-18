@@ -17,8 +17,8 @@ import (
 	ansi "github.com/k0kubun/go-ansi"
 	"github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/shirou/gopsutil/process"
-	"github.com/xalanq/cf-tool/config"
-	"github.com/xalanq/cf-tool/util"
+	"github.com/chomosuke/cf-tool/config"
+	"github.com/chomosuke/cf-tool/util"
 )
 
 func splitCmd(s string) (res []string) {
@@ -149,7 +149,7 @@ func judge(sampleID, command string) error {
 }
 
 // Test command
-func Test() (err error) {
+func Test(args ParsedArgs) (err error) {
 	cfg := config.Instance
 	if len(cfg.Template) == 0 {
 		return errors.New("You have to add at least one code template by `cf config`")
@@ -158,7 +158,7 @@ func Test() (err error) {
 	if len(samples) == 0 {
 		return errors.New("Cannot find any sample file")
 	}
-	filename, index, err := getOneCode(Args.File, cfg.Template)
+	filename, index, err := getOneCode(args.File, cfg.Template)
 	if err != nil {
 		return
 	}

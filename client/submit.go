@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/xalanq/cf-tool/util"
+	"github.com/chomosuke/cf-tool/util"
 
 	"github.com/fatih/color"
 )
@@ -23,7 +23,7 @@ func findErrorMessage(body []byte) (string, error) {
 
 // Submit submit (block while pending)
 func (c *Client) Submit(info Info, langID, source string) (err error) {
-	color.Cyan("Submit " + info.Hint())
+	color.Cyan("Submitting " + info.Hint())
 
 	URL, err := info.SubmitURL(c.host)
 	if err != nil {

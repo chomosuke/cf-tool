@@ -1,15 +1,15 @@
 package cmd
 
 import (
-	"github.com/xalanq/cf-tool/client"
+	"github.com/chomosuke/cf-tool/client"
 )
 
 // Watch command
-func Watch() (err error) {
+func Watch(args ParsedArgs) (err error) {
 	cln := client.Instance
-	info := Args.Info
+	info := args.Info
 	n := 10
-	if Args.All {
+	if args.All {
 		n = -1
 	}
 	if _, err = cln.WatchSubmission(info, n, false); err != nil {

@@ -10,47 +10,26 @@ import (
 
 	"github.com/docopt/docopt-go"
 
+	"github.com/chomosuke/cf-tool/client"
+	"github.com/chomosuke/cf-tool/config"
+	"github.com/chomosuke/cf-tool/util"
 	"github.com/fatih/color"
-	"github.com/xalanq/cf-tool/client"
-	"github.com/xalanq/cf-tool/config"
-	"github.com/xalanq/cf-tool/util"
 )
 
 // Eval opts
 func Eval(opts docopt.Opts) error {
-	Args = &ParsedArgs{}
-	opts.Bind(Args)
-	if err := parseArgs(opts); err != nil {
+	args := ParsedArgs{}
+	opts.Bind(&args)
+	if err := parseArgs(&args, opts); err != nil {
 		return err
 	}
-	if Args.Config {
-		return Config()
-	} else if Args.Submit {
-		return Submit()
-	} else if Args.List {
-		return List()
-	} else if Args.Parse {
-		return Parse()
-	} else if Args.Gen {
-		return Gen()
-	} else if Args.Test {
-		return Test()
-	} else if Args.Watch {
-		return Watch()
-	} else if Args.Open {
-		return Open()
-	} else if Args.Stand {
-		return Stand()
-	} else if Args.Sid {
-		return Sid()
-	} else if Args.Race {
-		return Race()
-	} else if Args.Pull {
-		return Pull()
-	} else if Args.Clone {
-		return Clone()
-	} else if Args.Upgrade {
-		return Upgrade()
+
+	if args.Setup {
+		return Setup(args)
+	} else if args.Submit {
+		return Submit(args)
+	} else if args.Upgrade {
+		return Upgrade(args)
 	}
 	return nil
 }

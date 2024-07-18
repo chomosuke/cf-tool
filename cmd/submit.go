@@ -1,33 +1,50 @@
 package cmd
 
 import (
+	"errors"
 	"io/ioutil"
 
-	"github.com/xalanq/cf-tool/client"
-	"github.com/xalanq/cf-tool/config"
+	"github.com/chomosuke/cf-tool/client"
+	"github.com/fatih/color"
 )
 
 // Submit command
-func Submit() (err error) {
+func Submit(args ParsedArgs) (err error) {
 	cln := client.Instance
-	cfg := config.Instance
-	info := Args.Info
-	filename, index, err := getOneCode(Args.File, cfg.Template)
-	if err != nil {
-		return
-	}
+	info := args.Info
+	filename := args.File
+	langId := args.LangId
 
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
-		return
+		return errors.New("Failed to read source code from " + filename)
 	}
 	source := string(bytes)
 
-	lang := cfg.Template[index].Lang
-	if err = cln.Submit(info, lang, source); err != nil {
-		if err = loginAgain(cln, err); err == nil {
-			err = cln.Submit(info, lang, source)
-		}
+	_, ok := client.Langs[langId]
+	if !ok {
+		return errors.New("No languages with ID " + langId)
 	}
-	return
+
+	err = cln.Submit(info, langId, source)
+	if err == nil {
+		// Submitted successfully in the first try
+		return nil
+	}
+
+	// Only retry if the client is not logged in
+	if err.Error() != client.ErrorNotLogged {
+		return
+	}
+
+	color.Red("Not logged in. Trying to login\n")
+	if err = cln.Login(); err != nil {
+		return errors.New("Failed to login")
+	}
+
+	if err = cln.Submit(info, langId, source); err != nil {
+		return errors.New("Failed to resubmit even after reauthentication")
+	}
+
+	return nil;
 }

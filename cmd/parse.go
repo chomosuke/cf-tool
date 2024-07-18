@@ -4,15 +4,15 @@ import (
 	"errors"
 	"path/filepath"
 
-	"github.com/xalanq/cf-tool/client"
-	"github.com/xalanq/cf-tool/config"
+	"github.com/chomosuke/cf-tool/client"
+	"github.com/chomosuke/cf-tool/config"
 )
 
 // Parse command
-func Parse() (err error) {
+func Parse(args ParsedArgs) (err error) {
 	cfg := config.Instance
 	cln := client.Instance
-	info := Args.Info
+	info := args.Info
 	source := ""
 	ext := ""
 	if cfg.GenAfterParse {
